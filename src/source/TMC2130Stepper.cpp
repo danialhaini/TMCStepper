@@ -36,12 +36,15 @@ void TMC2130Stepper::switchCSpin(bool state) {
 uint32_t TMC2130Stepper::read(uint8_t addressByte) {
   uint32_t out = 0UL;
   if (TMC_SW_SPI != NULL) {
+    TMC_SW_SPI->beginTransaction();
     switchCSpin(LOW);
     TMC_SW_SPI->transfer(addressByte & 0xFF);
     TMC_SW_SPI->transfer16(0x0000); // Clear SPI
     TMC_SW_SPI->transfer16(0x0000);
 
     switchCSpin(HIGH);
+    TMC_SW_SPI->endTransaction();
+    TMC_SW_SPI->beginTransaction();
     switchCSpin(LOW);
 
     status_response = TMC_SW_SPI->transfer(addressByte & 0xFF); // Send the address byte again
