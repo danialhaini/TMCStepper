@@ -16,10 +16,13 @@ class SW_SPIClass {
 		const uint16_t	mosi_pin,
 						miso_pin,
 						sck_pin;
-		fastio_bm mosi_bm,
-				miso_bm,
-				sck_bm;
-		fastio_reg mosi_register,
-						 miso_register,
-						 sck_register;
+
+		#if defined(ARDUINO_ARCH_AVR) || defined(TARGET_LPC1768)
+			fastio_bm mosi_bm,
+					miso_bm,
+					sck_bm;
+			fastio_reg mosi_register,
+							 miso_register,
+							 sck_register;
+		#endif
 };

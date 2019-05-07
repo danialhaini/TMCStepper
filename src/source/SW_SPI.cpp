@@ -12,19 +12,17 @@ void SW_SPIClass::init() {
   pinMode(miso_pin, INPUT_PULLUP);
   #ifdef TARGET_LPC1768
     mosi_register = gpio_port(LPC1768_PIN_PORT(mosi_pin));
-    mosi_bm = util::bit_value(LPC1768_PIN_PIN(mosi_pin));
     miso_register = gpio_port(LPC1768_PIN_PORT(miso_pin));
     sck_register = gpio_port(LPC1768_PIN_PORT(sck_pin));
+    mosi_bm = util::bit_value(LPC1768_PIN_PIN(mosi_pin));
     sck_bm = util::bit_value(LPC1768_PIN_PIN(sck_pin));
-  #else
+  #elif defined(ARDUINO_ARCH_AVR)
+    mosi_register = portOutputRegister(getPort(mosi_pin));
+    miso_register = portInputRegister(getPort(miso_pin));
+    sck_register = portOutputRegister(getPort(sck_pin));
     mosi_bm = digitalPinToBitMask(mosi_pin);
     miso_bm = digitalPinToBitMask(miso_pin);
     sck_bm = digitalPinToBitMask(sck_pin);
-    #ifdef ARDUINO_ARCH_AVR
-      mosi_register = portOutputRegister(getPort(mosi_pin));
-      miso_register = portInputRegister(getPort(miso_pin));
-      sck_register = portOutputRegister(getPort(sck_pin));
-    #endif
   #endif
 }
 
