@@ -20,6 +20,6 @@ class SW_SPIClass {
 				miso_bm,
 				sck_bm;
 		fastio_reg mosi_register,
-						 *miso_register,
-						 *sck_register;
+						 miso_register,
+						 sck_register;
 };
